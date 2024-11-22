@@ -1,0 +1,17 @@
+
+
+suppress_grid_image_plot: True
+suppress_grid_image_save: False
+save_as_eps: False
+
+buildings_map:
+  dimension: 2
+
+semantic_map:
+  dimension: 2
+
+streets_map:
+  dimension: 2
+
+radio_signal_towers_map:
+  dimension: 2

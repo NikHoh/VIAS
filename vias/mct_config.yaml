@@ -1,0 +1,72 @@
+suppress_grid_image_plot: True
+suppress_grid_image_save: True
+
+maps_to_be_created: [minimum_flight_height_map, clearance_height_map, obstacle_map, nfa_map, risk_map, radio_disturbance_map, noise_map]
+
+
+minimum_flight_height_map:
+    map_creator_module: map_creator_minimum_flight_height
+    map_creator_class: MapCreatorMinimumFlightHeight
+    inputs: []
+    output: minimum_flight_height_map
+    dimension: 3
+
+nfa_map:
+    map_creator_module: map_creator_nfa
+    map_creator_class: MapCreatorNfa
+    inputs: [obstacle_map, minimum_flight_height_map]
+    output: nfa_map
+    dimension: 3
+
+risk_map:
+    map_creator_module: map_creator_risk
+    map_creator_class: MapCreatorRisk
+    inputs: [nfa_map, buildings_map, semantic_map, clearance_height_map]
+    output: risk_map
+    dimension: 3
+
+noise_map:
+    map_creator_module: map_creator_noise
+    map_creator_class: MapCreatorNoise
+    inputs: [ streets_map, semantic_map, nfa_map, clearance_height_map]
+    output: noise_map
+    dimension: 3
+
+clearance_height_map:
+    map_creator_module: map_creator_clearance_height
+    map_creator_class: MapCreatorClearanceHeight
+    inputs: [buildings_map]
+    output: clearance_height_map
+    dimension: 2
+    parameters:
+        vertical_safety_distance: 10
+
+obstacle_map:
+    map_creator_module: map_creator_obstacle
+    map_creator_class: MapCreatorObstacle
+    inputs: [ buildings_map ]
+    output: obstacle_map
+    dimension: 3
+    parameters:
+        horizontal_safety_distance: 10
+        vertical_safety_distance: 10
+
+radio_disturbance_map:
+    map_creator_module: map_creator_radio_disturbance
+    map_creator_class: MapCreatorRadioDisturbance
+    inputs: [radio_towers, nfa_map, buildings_map]
+    output: radio_disturbance_map
+    dimension: 3
+    parameters:
+        best_signal_strength: -200
+        default_radio_tower_height: 75
+
+
+buildings_map:
+  dimension: 2
+
+semantic_map:
+  dimension: 2
+
+streets_map:
+  dimension: 2

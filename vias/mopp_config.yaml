@@ -1,0 +1,126 @@
+# Configuration file for meta-heuristic topology optimization framework
+
+
+seed: 249280
+remote: True
+
+suppress_pareto_image_plot: True
+suppress_grid_image_plot: True
+suppress_grid_image_save: False
+save_as_pdf: False
+suppress_iteration_based_paths_plot: True
+suppress_preprocessor_paths_plot: False
+
+multiprocessing_enabled: False
+cores: 8
+
+preprocessor:
+  advanced_individual_init: True
+  adaptive_number_of_control_points: True
+  approximation_error_threshold: 0.3  # unit-less, measured in error distance (m) per m path length (m)
+  multiple_weighted_start_points: True
+  num_mwsp: 84
+  normalization_type: "LSTSQ" # DBS and NONE
+
+path:
+#  waypoint_resolution: 2  # is determined automatically in dependence on x_res, y_res, and z_res
+  nurbs_order: 3 # so that the minimum number of control points is 3
+  default_num_control_points: 15
+
+objectives: [risk, noise, radio_disturbance, energy]  # minimization is assumed
+
+risk:
+  simulator_module: simulator_grid_based
+  simulator_class: SimulatorGridBased
+  inputs: [risk_map]
+  map_to_plot_on: risk_map
+
+noise:
+  simulator_module: simulator_grid_based
+  simulator_class: SimulatorGridBased
+  inputs: [noise_map]
+  map_to_plot_on: noise_map
+
+radio_disturbance:
+  simulator_module: simulator_grid_based
+  simulator_class: SimulatorGridBased
+  inputs: [radio_disturbance_map]
+  map_to_plot_on: radio_disturbance_map
+
+energy:
+  simulator_module: simulator_energy
+  simulator_class: SimulatorEnergy
+  inputs: []
+  map_to_plot_on: buildings_map
+
+constraints: [stay_above_minimum_flight_height, avoid_static_obstacle_collision, stay_within_operation_space]
+
+stay_above_minimum_flight_height:
+  constraint_checker_module: constraint_checker_minimum_flight_height
+  constraint_checker_class: ConstraintCheckerMinimumFlightHeight
+  inputs: [minimum_flight_height_map]
+  parameters:
+    punishment_factor: 1000000
+
+avoid_static_obstacle_collision:
+  constraint_checker_module: constraint_checker_static_obstacle_collision
+  constraint_checker_class: ConstraintCheckerStaticObstacleCollision
+  inputs: [obstacle_map]
+  parameters:
+    punishment_factor: 1000000
+
+stay_within_operation_space:
+  constraint_checker_module: constraint_checker_out_of_operation_space
+  constraint_checker_class: ConstraintCheckerOutOfOperationSpace
+  inputs: []
+  parameters:
+    punishment_factor: 1000000
+
+optimizer:
+  optimizer_identifier: VIAS_MO
+  optimizer_module: optimizer_ga
+  optimizer_class: OptimizerGA
+  parameters:
+    num_iterations: 20
+    crossover_probability: 0.9
+    mutation_probability: 1
+    population_size: 300
+    enable_niching: True
+
+buildings_map:
+  dimension: 2
+
+semantic_map:
+  dimension: 2
+
+streets_map:
+  dimension: 2
+
+risk_map:
+  dimension: 3
+
+noise_map:
+  dimension: 3
+
+obstacle_map:
+  dimension: 3
+
+radio_disturbance_map:
+  dimension: 3
+
+nfa_map:
+  dimension: 3
+
+clearance_height_map:
+  dimension: 2
+
+radio_signal_towers_map:
+  dimension: 2
+
+minimum_flight_height_map:
+  dimension: 3
+
+
+
+
+
