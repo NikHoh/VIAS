@@ -182,16 +182,12 @@ class TmercCoord:
 
 def get_projection():
     # EXAMPLE to use it
-    # east_tmerc, north_tmerc = tmerc_projection(promis_origin_lon, promis_origin_lat)
+    # east_tmerc, north_tmerc = tmerc_projection(origin_lon, origin_lat)
     # lon_tmerc, lat_tmerc = tmerc_projection(diff_east, diff_south, inverse=True)
-    promis_origin_lon = 2.339144258065529
-    promis_origin_lat = 48.86776494028203
     tmerc_projection = Proj(
         proj="tmerc",
         ellps="WGS84",
-        units="m",
-        lon_0=promis_origin_lon,
-        lat_0=promis_origin_lat)
+        units="m")
     return tmerc_projection
 
 def tmerc_coord_from_global_coord(global_coord: GlobalCoord, tmerc_projection: Optional[Proj] = None) -> TmercCoord:
