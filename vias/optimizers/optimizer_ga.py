@@ -8,7 +8,6 @@ import time
 from typing import List, Optional
 
 from vias.config import get_config
-from vias.external_optimizers.deap.crossover import cxOnePointDeterminedLength
 from vias.grid_graph import load_grid_graph
 from vias.path import Path
 
@@ -19,9 +18,10 @@ from deap.tools import mutPolynomialBounded, initRepeat, selNSGA2, selNSGA3WithM
 from pymoo.util.ref_dirs import get_reference_directions
 from deap.tools.selection import selTournament, selBest
 from deap import base as deap_base
-from vias.external_optimizers.NSGAII.simulated_binary_crossover import cxSimulatedBinaryBounded
-from vias.external_optimizers.NSGAIII.tournament_constraint import selTournamentConstraint
-from vias.external_optimizers.NSGAIII.tournament_constraint import selTournamentDCD
+from deap.tools.crossover import cxSimulatedBinaryBounded
+from deap.tools.crossover import cxOnePointDeterminedLength
+from deap.tools.emo import selTournamentDCD
+from deap.tools.emo import selTournamentConstraint
 
 from vias.optimizers.optimizer import Optimizer
 from vias.utils.tools import bcolors as bc
