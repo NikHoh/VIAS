@@ -296,14 +296,14 @@ def _save_and_close_plotly(close, fig, savepath, show_figure):
     fig.update_layout(showlegend=False)
     fig.data[0].update(showscale=False)
     if savepath != '' and not config.suppress_grid_image_save:
-        fig.write_image(savepath + '.png', height=2080, width=2080)
-        # fig.write_html(savepath + '.html')
+        fig.write_image(savepath + '.png')
+        fig.write_html(savepath + '.html')
         # fig.write_json(savepath + '.json')
         if config.save_as_pdf:
             fig.write_image(savepath + '.pdf')  # Plotly supports SVG, but not EPS directly
     # Show the image if requested
-    # if not config.suppress_grid_image_plot and show_figure:
-        # fig.show()
+    if not config.suppress_grid_image_plot and show_figure:
+        fig.show()
     if close:
         fig = None
     return fig

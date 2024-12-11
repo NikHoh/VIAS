@@ -397,8 +397,8 @@ class GridMap(GridGraph):
             z = np.flip(grid_data, axis=0),
             colorscale=colormap,
             zmin=zmin,
-            zmax=zmax#,
-            #colorbar=dict(title="Scale") if colbar else None,
+            zmax=zmax,
+            colorbar=dict(title="Scale") if colbar else None,
         ))
 
         # Plot circles (if provided)
@@ -419,20 +419,13 @@ class GridMap(GridGraph):
 
         # Set axis labels
         fig.update_layout(
-            xaxis_title='x Position (m)',
-            yaxis_title='y Position (m)',
+            xaxis_title='x position (m)',
+            yaxis_title='y position (m)',
             title=title if title else '',
-            width=2080,
-            height=2080,
-            xaxis=dict( tickfont=dict(size=60), range=[0.0, self.x_length - self.x_res], title_standoff=70, dtick=200),
-            yaxis=dict(tickfont=dict(size=60), range=[0.0, self.y_length - self.y_res], title_standoff=70, dtick=200),  #scaleanchor="x",
-            xaxis_title_font=dict(size=60),  # Change the size as needed
-            yaxis_title_font=dict(size=60),  # Change the size as needed
-            margin=dict(l=20, r=20, t=20, b=20)  # left, right, top, bottom margins
+            width=600,
+            height=600,
+            yaxis=dict(scaleanchor="x")
         )
-
-
-
         # Add a legend if specified
         if legend is not None:
             fig.update_layout(showlegend=True)
@@ -459,8 +452,8 @@ class GridMap(GridGraph):
         plt.imshow(self.grid_tensor[:, :, layer], origin='upper', extent=extent, norm=norm,
                    cmap=colormap,
                    interpolation='nearest')
-        plt.xlabel('x Position (m)')
-        plt.ylabel('y Position (m)')
+        plt.xlabel('x position (m)')
+        plt.ylabel('y position (m)')
         if colbar:
             plt.colorbar()
         if circles is not None:
@@ -537,8 +530,8 @@ class GridMap(GridGraph):
         fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y, colorscale=colormap)])
         fig.update_layout(
             scene=dict(
-                xaxis_title='x Position (m)',
-                yaxis_title='y Position (m)',
+                xaxis_title='x position (m)',
+                yaxis_title='y position (m)',
                 zaxis_title=z_axis_title,
                 aspectmode="cube"
             ),
@@ -580,8 +573,8 @@ class GridMap(GridGraph):
         Y = yv[:, :, layer]
         Z = self.grid_tensor[:, :, layer]
         ax.plot_surface(X, Y, Z, norm=mpl.colors.Normalize(), cmap=colormap)
-        ax.set_xlabel('x Position (m)')
-        ax.set_ylabel('y Position (m)')
+        ax.set_xlabel('x position (m)')
+        ax.set_ylabel('y position (m)')
         ax.set_zlabel(z_axis_title)
         return fig, ax
 
@@ -731,9 +724,9 @@ class GridMap(GridGraph):
             # Optional: Update the layout if needed (like adding axis labels)
             fig.update_layout(
                 scene=dict(
-                    xaxis_title='x Position (m)',
-                    yaxis_title='y Position (m)',
-                    zaxis_title='z Position (m)'
+                    xaxis_title='x position (m)',
+                    yaxis_title='y position (m)',
+                    zaxis_title='z position (m)'
                 ),
                 title='3D Path Plot'
             )
