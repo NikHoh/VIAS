@@ -1,3 +1,5 @@
+<img src="images/vias_logo.svg">
+
 # VIAS
 
 ## Overview
@@ -37,6 +39,10 @@ This code is based on theories and methodologies from the following publications
   _DOI/Link: [10.1109/CEC55065.2022.9870265](https://ieeexplore.ieee.org/document/9870265)_
 
 3. **PhD Thesis:** Details to be announced (TBA).
+
+### Demo
+
+[![Watch the demo](images/vias_demo_thumbnail.png)](https://www.youtube.com/watch?v=m4j9gsRIXTE)
 
 ---
 
