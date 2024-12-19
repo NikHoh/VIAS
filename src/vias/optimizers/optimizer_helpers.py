@@ -1,9 +1,8 @@
 from collections import UserList
-from typing import List, Optional, Set
 
 from deap.base import Fitness as deap_fitness
 
-from src.vias.constraint_checkers.constraint_checker import Constraint
+from vias.constraint_checkers.constraint_checker import Constraint
 
 
 class Fitness(deap_fitness):
@@ -27,52 +26,69 @@ class Individual(UserList):
     def __init__(self, solution, weights):
         super().__init__(solution)
         self.fitness = Fitness(weights)
-        self.constraints: Set[Constraint] = set()
+        self.constraints: set[Constraint] = set()
 
     def __hash__(self):
         return hash(tuple(self))
 
     def satisfies_constraints(self):
-        for constraint in self.constraints:
-            if not constraint.satisfied:
-                return False
-        return True
+        return all(constraint.satisfied for constraint in self.constraints)
 
 
 class Population(UserList):
-    def __init__(self, individuals: List[Individual], niche_numbers: Optional[List[int]] = None,
-                 enable_niching: bool = False):
+    def __init__(
+        self,
+        individuals: list[Individual],
+        niche_numbers: list[int] | None = None,
+        enable_niching: bool = False,
+    ):
         super().__init__([])
         self._niching_enabled = enable_niching
         if niche_numbers is None:
-            assert not self._niching_enabled, "If niching is enabled you have to provide niche numbers."
+            assert not self._niching_enabled, (
+                "If niching is enabled you have to " "provide niche numbers."
+            )
             niche_numbers = []
         else:
-            assert len(individuals) == len(niche_numbers), "Niche numbers and individuals need the same size"
-        self.niches = dict(zip([i for i in niche_numbers], [[] for _ in niche_numbers]))
+            assert len(individuals) == len(
+                niche_numbers
+            ), "Niche numbers and individuals need the same size"
+        self.niches: dict[int, list[Individual]] = dict(
+            zip(niche_numbers, [[] for _ in niche_numbers], strict=False)
+        )
 
         self.extend(individuals, niche_numbers)
 
-    def append(self, item, niche_number: Optional[int] = None):
-        assert isinstance(item, Individual), "Population can only constist of elements of type individual"
+    def append(self, item, niche_number: int | None = None):
+        assert isinstance(item, Individual), (
+            "Population can only constist of elements of " "type individual"
+        )
         super().append(item)
         if self._niching_enabled:
-            assert 0 <= niche_number < len(self.niches), "Niche number does not fit initialized niches"
             assert niche_number is not None, "You have to provide a niche number"
+            assert (
+                0 <= niche_number < len(self.niches)
+            ), "Niche number does not fit initialized niches"
             self.niches[niche_number].append(item)
 
-    def extend(self, individuals, niche_numbers: Optional[List[int]] = None):
+    def extend(self, individuals, niche_numbers: list[int] | None = None):
         if self._niching_enabled:
-            assert niche_numbers is not None, "You have to provide a list of niche numbers"
-            assert len(individuals) == len(niche_numbers), "Niche numbers and individuals need the same size"
-        for ind_idx, individual in enumerate(individuals):
-            if self._niching_enabled:
+            assert niche_numbers is not None, (
+                "You have to provide a list of niche " "numbers"
+            )
+            assert len(individuals) == len(
+                niche_numbers
+            ), "Niche numbers and individuals need the same size"
+            for ind_idx, individual in enumerate(individuals):
                 self.append(individual, niche_number=niche_numbers[ind_idx])
-            else:
+        else:
+            for individual in individuals:
                 self.append(individual)
 
-    def set_niches(self, new_niches: List[List[Individual]]):
-        assert len(new_niches) == len(self.niches), "Number of new niches does not fit to number of current niches"
+    def set_niches(self, new_niches: list[list[Individual]]):
+        assert len(new_niches) == len(
+            self.niches
+        ), "Number of new niches does not fit to number of current niches"
         self.clear_population()
         for niche_idx, niche in enumerate(new_niches):
             for individual in niche:
@@ -80,10 +96,10 @@ class Population(UserList):
 
     def clear_population(self):
         self.clear()
-        for key in self.niches.keys():
+        for key in self.niches:
             self.niches[key] = []
 
-    def get_niches(self) -> List[List[Individual]]:
+    def get_niches(self) -> list[list[Individual]]:
         if self._niching_enabled:
             return list(self.niches.values())
         else:
@@ -92,27 +108,3 @@ class Population(UserList):
     def disable_niching(self):
         self._niching_enabled = False
         self.niches = {0: []}
-
-# class cFitness(object):
-#     def __init__(self):
-#         self.valid = True
-#         self.values = ()
-#         self.weights = ()
-#         self.wvalues = ()
-
-
-# def convert_ind(ind):
-#     c_fitness = cFitness()
-#     c_fitness.valid = ind.fitness.valid
-#     c_fitness.values = ind.fitness.values
-#     c_fitness.weights = ind.fitness.weights
-#     c_fitness.wvalues = ind.fitness.wvalues
-#
-#     c_ind = Individual(list(ind), ind.fitness.weights)
-#     c_ind.fitness = c_fitness
-#     c_ind.constraints = ind.constraints
-#     try:
-#         c_ind.strategy = list(ind.strategy)
-#     except AttributeError:
-#         pass
-#     return c_ind

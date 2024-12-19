@@ -7,7 +7,7 @@ _config = None
 
 def load_config(yaml_file_path):
     global _config
-    with open(yaml_file_path, 'r') as f:
+    with open(yaml_file_path) as f:
         config_dict = yaml.safe_load(f)
     _config = DotMap(config_dict)
     return _config

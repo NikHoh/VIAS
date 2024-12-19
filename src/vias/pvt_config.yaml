@@ -4,10 +4,6 @@ suppress_grid_image_plot: False
 suppress_grid_image_save: False
 save_as_pdf: False
 
-path:
-  nurbs_order: 3 # so that the minimum number of control points is 3
-  default_num_control_points: 15
-
 buildings_map:
   dimension: 2
 

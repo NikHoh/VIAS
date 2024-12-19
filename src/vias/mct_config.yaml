@@ -1,47 +1,28 @@
-suppress_grid_image_plot: True
-suppress_grid_image_save: True
+# Configuration file for the Map Creation Tool (MCT)
 
-maps_to_be_created: [minimum_flight_height_map, clearance_height_map, obstacle_map, nfa_map, risk_map, radio_disturbance_map, noise_map]
+suppress_grid_image_plot: True  # disable showing plotted grid maps
+suppress_grid_image_save: False  # disable saving plotted grid maps
+
+maps_to_be_created: [minimum_flight_height_map, clearance_height_map, obstacle_map, nfa_map, risk_map, radio_disturbance_map, noise_map]   #  all listed map creators must be configured in the following
 
 
-minimum_flight_height_map:
+clearance_height_map:  # 2D matrix indicating a save flight altitude over buildings
+    map_creator_module: map_creator_clearance_height  #  the module defining the map creator class
+    map_creator_class: MapCreatorClearanceHeight   # name of the map creator class
+    inputs: [buildings_map]  # inputs that are loaded upon map creator initialization
+    output: clearance_height_map   # name of the created grid map
+    dimension: 2   # dimension of the grid map
+    parameters:  # needed parameters for the map creator
+        vertical_safety_distance: 10
+
+minimum_flight_height_map: # 3D binary matrix indicating grid cells below the minimum flight height with `1`
     map_creator_module: map_creator_minimum_flight_height
     map_creator_class: MapCreatorMinimumFlightHeight
     inputs: []
     output: minimum_flight_height_map
     dimension: 3
 
-nfa_map:
-    map_creator_module: map_creator_nfa
-    map_creator_class: MapCreatorNfa
-    inputs: [obstacle_map, minimum_flight_height_map]
-    output: nfa_map
-    dimension: 3
-
-risk_map:
-    map_creator_module: map_creator_risk
-    map_creator_class: MapCreatorRisk
-    inputs: [nfa_map, buildings_map, semantic_map, clearance_height_map]
-    output: risk_map
-    dimension: 3
-
-noise_map:
-    map_creator_module: map_creator_noise
-    map_creator_class: MapCreatorNoise
-    inputs: [ streets_map, semantic_map, nfa_map, clearance_height_map]
-    output: noise_map
-    dimension: 3
-
-clearance_height_map:
-    map_creator_module: map_creator_clearance_height
-    map_creator_class: MapCreatorClearanceHeight
-    inputs: [buildings_map]
-    output: clearance_height_map
-    dimension: 2
-    parameters:
-        vertical_safety_distance: 10
-
-obstacle_map:
+obstacle_map:  # 3D matrix indicating grid cells within static obstacles (+ safety distance) with `1`
     map_creator_module: map_creator_obstacle
     map_creator_class: MapCreatorObstacle
     inputs: [ buildings_map ]
@@ -51,7 +32,28 @@ obstacle_map:
         horizontal_safety_distance: 10
         vertical_safety_distance: 10
 
-radio_disturbance_map:
+nfa_map:  # combining obstacle and minimum flight height grid maps
+    map_creator_module: map_creator_nfa
+    map_creator_class: MapCreatorNfa
+    inputs: [obstacle_map, minimum_flight_height_map]
+    output: nfa_map
+    dimension: 3
+
+risk_map:  # 3D matrix with risk values for each grid cell, indicating the potential risk of injury to city residents if a UAV flying through that cell experiences a malfunction
+    map_creator_module: map_creator_risk
+    map_creator_class: MapCreatorRisk
+    inputs: [nfa_map, buildings_map, semantic_map, clearance_height_map]
+    output: risk_map
+    dimension: 3
+
+noise_map: # 3D matrix with noise values for each cell depending on the altitude of the cell and its distance to ground traffic streets
+    map_creator_module: map_creator_noise
+    map_creator_class: MapCreatorNoise
+    inputs: [ streets_map, semantic_map, nfa_map, clearance_height_map]
+    output: noise_map
+    dimension: 3
+
+radio_disturbance_map:  # 3D matrix with signal disturbance values for each grid cell depending on the radio cell tower positions
     map_creator_module: map_creator_radio_disturbance
     map_creator_class: MapCreatorRadioDisturbance
     inputs: [radio_towers, nfa_map, buildings_map]
@@ -61,6 +63,7 @@ radio_disturbance_map:
         best_signal_strength: -200
         default_radio_tower_height: 75
 
+# for every grid map that needs to be loaded or saved, its dimension must be specified for the correct data save path naming scheme
 
 buildings_map:
   dimension: 2

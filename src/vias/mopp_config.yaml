@@ -1,65 +1,61 @@
-# Configuration file for meta-heuristic topology optimization framework
+# Configuration file for the Multi-Objective Path Planning (MOPP) framework
 
+seed: 249280  # random seed
 
-seed: 249280
-remote: True
-
-suppress_pareto_image_plot: True
-suppress_grid_image_plot: True
-suppress_grid_image_save: False
+suppress_grid_image_plot: True  # disable showing plotted grid maps
+suppress_grid_image_save: False  # disable saving plotted grid maps
 save_as_pdf: False
-suppress_iteration_based_paths_plot: True
-suppress_preprocessor_paths_plot: False
+suppress_iteration_based_paths_plot: True  # disable plotting paths after each iteration
+suppress_preprocessor_paths_plot: False  # disable plotting paths after the hybrid pre-processing
 
-multiprocessing_enabled: False
-cores: 8
+multiprocessing_enabled: False  # enable multiprocessing
+cores: 8  # cores used if multiprocessing is enabled
 
-preprocessor:
-  advanced_individual_init: True
-  adaptive_number_of_control_points: True
-  approximation_error_threshold: 0.3  # unit-less, measured in error distance (m) per m path length (m)
-  multiple_weighted_start_points: True
-  num_mwsp: 84
-  normalization_type: "LSTSQ" # DBS and NONE
+preprocessor:  # parameters for the hybrid pre-processing (calculation of good initial paths via Dijkstra)
+  advanced_individual_init: True  # enable the hybrid pre-processing
+  adaptive_number_of_control_points: True  # the ANCP feature automatically determines the number of NURBS control points for the spline approximation from the Dijkstra paths
+  approximation_error_threshold: 1.0  # unit-less, measured in error distance (m) per m path length (m), determines the threshold for an acceptable spline approximation
+  multiple_weighted_start_points: True  # enable more weighted aggregations of different objectives in the pre-processing than only one and zero weights
+  num_mwsp: 56  # number of multiple weighted aggregations (start points), only equidistant samplings allowed, thus only designated numbers depending on the number of objectives, run to get allowed number near the chosen one
+  normalization_type: "LSTSQ" # allowed values are (LSTSQ, DBS and NONE), specifying the type of normalization before the aggregation of grid maps in the pre-processing step
 
 path:
-#  waypoint_resolution: 2  # is determined automatically in dependence on x_res, y_res, and z_res
-  nurbs_order: 3 # so that the minimum number of control points is 3
-  default_num_control_points: 15
+  nurbs_order: 3 # equals NURBS degree +1, equals the minimum number of control points
+  num_control_points: 15  # in case the ANCP feature is turned off
 
-objectives: [risk, noise, radio_disturbance, energy]  # minimization is assumed
+objectives: [risk, noise, radio_disturbance, energy]  # minimization is assumed, all listed objectives must be configured in the following
 
-risk:
-  simulator_module: simulator_grid_based
-  simulator_class: SimulatorGridBased
-  inputs: [risk_map]
-  map_to_plot_on: risk_map
+risk:  # risk of injury minimization
+  simulator_module: simulator_grid_based  # the module defining the simulator class
+  simulator_class: SimulatorGridBased  # name of the simulator class
+  inputs: [risk_map]  # inputs that are loaded upon initialization
+  map_to_plot_on: risk_map  # grid map to plot risk-optimal paths for visualization purposes
 
-noise:
+noise:  # noise imission minimization
   simulator_module: simulator_grid_based
   simulator_class: SimulatorGridBased
   inputs: [noise_map]
   map_to_plot_on: noise_map
 
-radio_disturbance:
+radio_disturbance:  # radio disturbance minimization
   simulator_module: simulator_grid_based
   simulator_class: SimulatorGridBased
   inputs: [radio_disturbance_map]
   map_to_plot_on: radio_disturbance_map
 
-energy:
+energy:  # energy consumption minimization
   simulator_module: simulator_energy
   simulator_class: SimulatorEnergy
   inputs: []
   map_to_plot_on: buildings_map
 
-constraints: [stay_above_minimum_flight_height, avoid_static_obstacle_collision, stay_within_operation_space]
+constraints: [stay_above_minimum_flight_height, avoid_static_obstacle_collision, stay_within_operation_space]  # all listed constraints must be configured in the following
 
-stay_above_minimum_flight_height:
-  constraint_checker_module: constraint_checker_minimum_flight_height
-  constraint_checker_class: ConstraintCheckerMinimumFlightHeight
-  inputs: [minimum_flight_height_map]
-  parameters:
+stay_above_minimum_flight_height:  # let path stay above minimum the specified minimum flight height (specified as parameter calling the mopp.py main function)
+  constraint_checker_module: constraint_checker_minimum_flight_height  # the module defining the constraint checker class
+  constraint_checker_class: ConstraintCheckerMinimumFlightHeight  # name of the constraint checker class
+  inputs: [minimum_flight_height_map]  # inputs that are loaded upon initialization
+  parameters:  # needed parameters for the constraint checker
     punishment_factor: 1000000
 
 avoid_static_obstacle_collision:
@@ -76,16 +72,18 @@ stay_within_operation_space:
   parameters:
     punishment_factor: 1000000
 
-optimizer:
+optimizer:  # the actual multi-objective path optimization via a meta-heuristic (evolutionary) algorithm
   optimizer_identifier: VIAS_MO
-  optimizer_module: optimizer_ga
-  optimizer_class: OptimizerGA
-  parameters:
-    num_iterations: 20
-    crossover_probability: 0.9
-    mutation_probability: 1
-    population_size: 300
-    enable_niching: True
+  optimizer_module: optimizer_ga  # the module defining the optimizer class
+  optimizer_class: OptimizerGA  # name of the optimizer class
+  parameters:  # needed parameters for the optimizer
+    num_iterations: 75  # number of generations/iterations
+    crossover_probability: 0.5 # probability to apply the cross-over operator upon population/solution set variation
+    mutation_probability: 1 # probability to apply the mutation operator upon population/solution set variation
+    population_size: 560  # size of the population/solution set, when MWSP is enabled the size should be at least ten times num_mwsp
+    enable_niching: True  # only available if ANCP is the hybrid pre-processing is enabled, if niching is enabled, every pre-processed solution is kept in a separate niche until at least one solution in the niche satisfies all constraints
+
+# for every grid map that needs to be loaded or saved, its dimension must be specified for the correct data save path naming scheme
 
 buildings_map:
   dimension: 2

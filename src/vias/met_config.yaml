@@ -1,8 +1,10 @@
+# Configuration file for the Map Extraction Tool (MET)
 
+suppress_grid_image_plot: True  # disable showing plotted grid maps
+suppress_grid_image_save: False  # disable saving plotted grid maps
+save_as_pdf: False
 
-suppress_grid_image_plot: True
-suppress_grid_image_save: False
-save_as_eps: False
+# for every grid map that needs to be loaded or saved, its dimension must be specified for the correct data save path naming scheme
 
 buildings_map:
   dimension: 2
