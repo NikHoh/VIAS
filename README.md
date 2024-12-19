@@ -93,11 +93,14 @@ For detailed information on the usage of the tools, see the section [Details Usa
       |   |   |-- ocid
       |   |-- processing
       |   |-- output
+      |   |-- scenario_info.json
       |-- VIAS (this repo)
       |   |-- src
       |   |   |-- vias
       |   |   |   |-- ...
       |   |-- tests
+      |   |   |-- ... 
+      |   |-- examples
       |   |   |-- ... 
       |   |-- README.md (this readme)
       |   |-- pyproject.toml   
@@ -107,8 +110,8 @@ For detailed information on the usage of the tools, see the section [Details Usa
 
 6. Navigate into the `VIAS` folder
    - `cd workspace/VIAS` 
-7. Install a Python virtual environment with `conda` and install the dependencies (choose the correct environment.yml depending on your system)
-   - `conda env create --file environment_<WIN_or_LINUX>.yml --name vias_env`
+7. Install a Python virtual environment with `conda`
+   - `conda env create --name vias_env`
 8. Activate the environment
    - `conda activate vias_env`
 9. Navigate into the `VIAS` folder
