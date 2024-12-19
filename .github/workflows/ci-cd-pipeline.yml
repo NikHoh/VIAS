@@ -32,7 +32,6 @@ jobs:
 
       - name: Run mypy Type Checking
         run: |
-          mypy --install-types
           mypy --ignore-missing-imports .
 
       - name: Run Tests
