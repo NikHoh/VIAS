@@ -2,6 +2,11 @@
 
 # VIAS
 
+[![Python 3.11](https://img.shields.io/badge/python-3.11-red.svg)](https://www.python.org/downloads/release/python-3119/)
+[![CI/CD Pipeline](https://github.com/NikHoh/VIAS/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/NikHoh/VIAS/actions/workflows/ci-cd-pipeline.yml)
+[![Static Badge](https://img.shields.io/badge/DOI-10.1109%2FOJITS.2023.3299496-yellow)](https://ieeexplore.ieee.org/document/10196046)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 ## Overview
 
 **This is the inital commit's README. [More updates](#upcoming-features) in the next two to three weeks.**
