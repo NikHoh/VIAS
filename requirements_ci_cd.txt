@@ -1,0 +1,16 @@
+pytest==8.3.3
+PyYAML==6.0.1
+numpy==1.26.4
+dotmap==1.3.30
+matplotlib==3.9.2
+pandas==2.2.2
+igraph==0.11.6
+scipy==1.12.0
+pyproj==3.6.1
+plotly==5.24.1
+geomdl==5.3.1
+osmread @ git+https://github.com/dezhin/osmread.git@d8d3fe5edd15fdab9526ea7a100ee6c796315663
+scikit-learn==1.5.1
+rich==13.7.1
+ruff==0.8.3
+mypy==1.13.0
