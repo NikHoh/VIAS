@@ -47,6 +47,8 @@ class TestSimulatorGridBased(unittest.TestCase):
         self.scenario_info = ScenarioInfo(
             map_NW_origin_lon=2.5,
             map_NW_origin_lat=40,
+            tmerc_proj_origin_lon=0.0,
+            tmerc_proj_origin_lat=0.0,
             x_length=20,
             y_length=20,
             z_length=10,
