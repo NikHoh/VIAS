@@ -8,7 +8,7 @@ from vias.utils.helpers import ArrayCoord, LocalCoord, MapInfo
 
 
 def get_test_map():
-    return GridMap(MapInfo(2.5, 40.0, 20, 10, 10, 4, 2, 5, "test_map"))
+    return GridMap(MapInfo(2.5, 40.0, 0.0, 0.0, 20, 10, 10, 4, 2, 5, "test_map"))
 
 
 class TestGridMap(unittest.TestCase):
