@@ -172,7 +172,7 @@ class TestGridMap(unittest.TestCase):
             self.assertEqual(array_coord, array_coords[counter])
 
     def test_get_interpolated_values_from_local_coords(self):
-        grid_map = GridMap(MapInfo(2.5, 40.0, 10, 6, 8, 5, 3, 4, "test_map"))
+        grid_map = GridMap(MapInfo(2.5, 40.0, 0.0, 0.0, 10, 6, 8, 5, 3, 4, "test_map"))
         # define layer 0
         grid_map.grid_tensor[:, :, 0] = np.array([[1, 2], [4, 3]])
         # define layer 1
