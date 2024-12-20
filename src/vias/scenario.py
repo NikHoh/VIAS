@@ -1,11 +1,11 @@
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from vias.grid_map import GridMap
 
 from pyproj import Proj
 
-from vias.utils.helpers import ScenarioInfo, GlobalCoord, TmercCoord, Info, MapInfo
+from vias.utils.helpers import GlobalCoord, Info, MapInfo, ScenarioInfo, TmercCoord
 
 
 class Scenario:
@@ -52,7 +52,7 @@ class Scenario:
                 )
             else:
                 self.scenario_info: ScenarioInfo | None = None
-            self.grid_maps: dict[str, "GridMap"] = {}
+            self.grid_maps: dict[str, GridMap] = {}
 
     @classmethod
     def reset_instance(cls):

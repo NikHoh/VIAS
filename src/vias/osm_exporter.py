@@ -3,15 +3,19 @@ import subprocess
 
 from osmread import Node, Relation, Way, parse_file
 
+from vias.scenario import (
+    get_projection,
+    get_tmerc_map_center,
+    tmerc_coord_from_global_coord,
+)
 from vias.utils.tools import euclidian_distance
-from vias.scenario import get_projection, tmerc_coord_from_global_coord, \
-    get_tmerc_map_center
 
 from .utils.helpers import (
     GlobalCoord,
     ScenarioInfo,
     TmercCoord,
-    get_osm_identifier, )
+    get_osm_identifier,
+)
 
 
 class NoNumericLiteralException(Exception):

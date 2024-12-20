@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 from vias.config import get_config
 from vias.path import Path
+from vias.scenario import get_tmerc_map_origin
 from vias.utils.helpers import (
     ArrayCoord,
     LocalCoord,
@@ -20,8 +21,8 @@ from vias.utils.helpers import (
     ScenarioInfo,
     TmercCoord,
     get_graph_identifier,
-    get_map_identifier, )
-from vias.scenario import get_tmerc_map_origin
+    get_map_identifier,
+)
 
 
 class InvalidCoordinateError(Exception):

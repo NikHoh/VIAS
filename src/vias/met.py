@@ -21,13 +21,14 @@ from vias.grid_graph import (
 from vias.grid_map import GridMap
 from vias.ocid_exporter import OcidExporter
 from vias.osm_exporter import CityModel, OsmExporter
+from vias.scenario import Scenario, get_tmerc_map_origin
 from vias.utils.helpers import (
     ScenarioInfo,
     coastline2polygon,
     get_map_identifier,
-    get_osm_identifier, load_scenario_info_from_json,
+    get_osm_identifier,
+    load_scenario_info_from_json,
 )
-from vias.scenario import get_tmerc_map_origin, Scenario
 from vias.utils.tools import get_polygon_area
 
 

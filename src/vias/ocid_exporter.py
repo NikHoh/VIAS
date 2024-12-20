@@ -7,12 +7,13 @@ import pandas as pd
 
 # import pickle5 as pkl
 from .osm_exporter import get_global_osm_bounding_box
+from .scenario import tmerc_coord_from_global_coord
 from .utils.helpers import (
     GlobalCoord,
     ScenarioInfo,
     TmercCoord,
-    get_osm_identifier, )
-from .scenario import tmerc_coord_from_global_coord
+    get_osm_identifier,
+)
 
 
 def get_tmerc_ocid_bounding_box(scenario_info) -> tuple[TmercCoord, TmercCoord]:
