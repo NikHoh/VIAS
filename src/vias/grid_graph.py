@@ -20,9 +20,8 @@ from vias.utils.helpers import (
     ScenarioInfo,
     TmercCoord,
     get_graph_identifier,
-    get_map_identifier,
-    get_tmerc_map_origin,
-)
+    get_map_identifier, )
+from vias.scenario import get_tmerc_map_origin
 
 
 class InvalidCoordinateError(Exception):

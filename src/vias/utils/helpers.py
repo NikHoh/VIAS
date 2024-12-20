@@ -4,7 +4,6 @@ import sys
 from dataclasses import asdict, astuple, dataclass
 
 import numpy as np
-from pyproj import Proj
 
 from vias.console_manager import console
 from vias.utils.tools import (
@@ -59,6 +58,8 @@ class OptimizationEndsInNiches(Exception):
 class Info:
     map_NW_origin_lon: float
     map_NW_origin_lat: float
+    tmerc_proj_origin_lon: float
+    tmerc_proj_origin_lat: float
     x_length: int
     y_length: int
     z_length: int
@@ -124,11 +125,14 @@ class ScenarioInfo(Info):
                 f"is. {needed_storage} MB.",
                 highlight=True,
             )
+            raise AssertionError("Grid too big")
 
     def convert_to_map_info(self, map_name: str) -> "MapInfo":
         return MapInfo(
             map_NW_origin_lon=self.map_NW_origin_lon,
             map_NW_origin_lat=self.map_NW_origin_lat,
+            tmerc_proj_origin_lon=self.tmerc_proj_origin_lon,
+            tmerc_proj_origin_lat=self.tmerc_proj_origin_lat,
             x_length=self.x_length,
             y_length=self.y_length,
             z_length=self.z_length,
@@ -149,6 +153,8 @@ class MapInfo(Info):
         return ScenarioInfo(
             map_NW_origin_lon=self.map_NW_origin_lon,
             map_NW_origin_lat=self.map_NW_origin_lat,
+            tmerc_proj_origin_lon=self.tmerc_proj_origin_lon,
+            tmerc_proj_origin_lat=self.tmerc_proj_origin_lat,
             x_length=self.x_length,
             y_length=self.y_length,
             z_length=self.z_length,
@@ -247,38 +253,6 @@ class GlobalCoord:
     def __post_init__(self):
         assert isinstance(self.lon, float)
         assert isinstance(self.lat, float)
-
-
-def get_projection():
-    # EXAMPLE to use it
-    # east_tmerc, north_tmerc = tmerc_projection(origin_lon, origin_lat)
-    # lon_tmerc, lat_tmerc = tmerc_projection(diff_east, diff_south, inverse=True)
-    tmerc_projection = Proj(proj="tmerc", ellps="WGS84", units="m")
-    return tmerc_projection
-
-
-def tmerc_coord_from_global_coord(
-    global_coord: GlobalCoord, tmerc_projection: Proj | None = None
-) -> TmercCoord:
-    if tmerc_projection is None:
-        tmerc_projection = get_projection()
-    east, north = tmerc_projection(global_coord.lon, global_coord.lat)
-    return TmercCoord(east, north)
-
-
-def get_tmerc_map_center(info: Info):
-    tmerc_map_origin = get_tmerc_map_origin(info)
-    map_center_east = tmerc_map_origin.east + int(info.x_length / 2)
-    map_center_north = tmerc_map_origin.north - int(info.y_length / 2)
-    return TmercCoord(map_center_east, map_center_north)
-
-
-def get_tmerc_map_origin(info: Info, tmerc_projection: Proj | None = None):
-    if isinstance(info, ScenarioInfo | MapInfo):
-        return tmerc_coord_from_global_coord(
-            GlobalCoord(info.map_NW_origin_lon, info.map_NW_origin_lat),
-            tmerc_projection=tmerc_projection,
-        )
 
 
 def get_osm_identifier(scenario_info: ScenarioInfo) -> str:

@@ -25,10 +25,9 @@ from vias.utils.helpers import (
     ScenarioInfo,
     coastline2polygon,
     get_map_identifier,
-    get_osm_identifier,
-    get_tmerc_map_origin,
-    load_scenario_info_from_json,
+    get_osm_identifier, load_scenario_info_from_json,
 )
+from vias.scenario import get_tmerc_map_origin, Scenario
 from vias.utils.tools import get_polygon_area
 
 
@@ -224,7 +223,7 @@ def extract_grid_maps(
 ):
     config = get_config()
     city_model = load_city_model(scenario_info, data_save_folder)
-    radio_towers = load_radio_towers(scenario_info, data_save_folder)
+
     rasterio_transform = get_rasterio_transform(scenario_info)
 
     grid_map_plots_path = get_grid_map_plots_path(data_save_folder)
@@ -234,6 +233,7 @@ def extract_grid_maps(
     maps_to_extract = ["buildings_map", "streets_map", "semantic_map"]
     if not no_ocid:
         maps_to_extract.append("radio_signal_towers_map")
+        radio_towers = load_radio_towers(scenario_info, data_save_folder)
     for map_name in maps_to_extract:
         map_save_path = get_grid_graph_path(data_save_folder, scenario_info, map_name)
 
@@ -370,6 +370,8 @@ def main(
 
     # load scenario info
     scenario_info = load_scenario_info_from_json(ScenarioInfo, base_data_folder)
+    Scenario.reset_instance()
+    Scenario(scenario_info)
 
     assert os.path.exists(data_save_folder), "Given data save folder does not exist"
 

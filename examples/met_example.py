@@ -6,7 +6,7 @@ from vias.utils.helpers import ScenarioInfo, save_scenario_info_to_json
 
 def main():
     scenario_info = ScenarioInfo(
-        2.291197, 48.860349, 500, 500, 300, 5, 5, 10, "paris_test", 60, 240
+        2.291197, 48.860349, 0.0, 0.0, 500, 500, 300, 5, 5, 10, "paris_test", 60, 240
     )
 
     base_data_folder = r"../../VIAS_data/"

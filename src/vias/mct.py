@@ -8,6 +8,7 @@ from vias.console_manager import console
 from vias.grid_graph import get_grid_graph_path, load_grid_graph, save_grid_graph
 from vias.grid_map import GridMap
 from vias.met import get_grid_map_plots_path, get_radio_tower_path
+from vias.scenario import Scenario
 from vias.utils.helpers import (
     ScenarioInfo,
     get_map_identifier,
@@ -91,6 +92,8 @@ def main(
 
     # load scenario info
     scenario_info = load_scenario_info_from_json(ScenarioInfo, base_data_folder)
+    Scenario.reset_instance()
+    Scenario(scenario_info)
 
     for map_to_be_created in config.maps_to_be_created:
         # name of grid_map to be created
@@ -117,15 +120,15 @@ def main(
                 f"{grid_map.name}",
             )
         )
-        if grid_map.dimension == 3:
-            grid_map.plot_volume(
-                save_path=os.path.join(
-                    grid_map_plots_path,
-                    f"{get_map_identifier(scenario_info, grid_map.dimension)}_"
-                    f"{grid_map.name}_volume",
-                )
-            )
-            grid_map.plot_slices(grid_map_plots_path)
+        # if grid_map.dimension == 3:
+        #     grid_map.plot_volume(
+        #         save_path=os.path.join(
+        #             grid_map_plots_path,
+        #             f"{get_map_identifier(scenario_info, grid_map.dimension)}_"
+        #             f"{grid_map.name}_volume",
+        #         )
+        #     )
+        #     grid_map.plot_slices(grid_map_plots_path)
         # save grid map
         console.log("Saving grid map")
         save_grid_graph(grid_map, data_save_folder, scenario_info, output_str)

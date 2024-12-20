@@ -11,9 +11,8 @@ from .utils.helpers import (
     GlobalCoord,
     ScenarioInfo,
     TmercCoord,
-    get_osm_identifier,
-    tmerc_coord_from_global_coord,
-)
+    get_osm_identifier, )
+from .scenario import tmerc_coord_from_global_coord
 
 
 def get_tmerc_ocid_bounding_box(scenario_info) -> tuple[TmercCoord, TmercCoord]:

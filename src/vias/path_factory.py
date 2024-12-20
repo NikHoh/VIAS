@@ -7,9 +7,8 @@ from geomdl import knotvector
 from vias.config import get_config
 from vias.console_manager import console
 from vias.grid_graph import load_grid_graph, local_coord_from_tmerc_coord
-from vias.osm_exporter import tmerc_coord_from_global_coord
 from vias.path import ChordalNURBS, Path
-from vias.scenario import Scenario
+from vias.scenario import Scenario, tmerc_coord_from_global_coord
 from vias.utils.helpers import (
     ArrayCoord,
     GlobalCoord,

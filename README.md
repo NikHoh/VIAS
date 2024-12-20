@@ -77,8 +77,8 @@ For detailed information on the usage of the tools, see the section [Details Usa
 
 **Option A: Build by yourself**
 
-1. Install Miniconda (Python environment management tool) by following https://docs.anaconda.com/miniconda/
-2. To use the Map Extraction Tool (MET), install Osmosis by following https://wiki.openstreetmap.org/wiki/Osmosis/Installation
+1. Install Miniconda (Python environment management tool) following https://docs.anaconda.com/miniconda/
+2. To use the Map Extraction Tool (MET), install Osmosis following https://wiki.openstreetmap.org/wiki/Osmosis/Installation
 3. Create an empty working folder, in the following called `workspace`
 4. Pull this repo into the `workspace`
 5. Create another folder `VIAS_data` and create the following structure (alternatively you can pull https://github.com/NikHoh/VIAS_data that already contains exemplary data)
@@ -129,16 +129,35 @@ The four tools (Map Extraction Tool, Map Creation Tool, Path Planning Tool, Path
 
 **All data that is used in the following example, can also be obtained from https://github.com/NikHoh/VIAS_data**.
 
+All four tools take scenario information as input that is provided within the `scenario_info.json` tile in the `VIAS_data` 
+folder. The scenario information given in the [VIAS_data repo](https://github.com/NikHoh/VIAS_data) can be adapted to arbitrary parameters (e.g., operation spaces).
+
+#### Scenario Information
+
+The `scenario_info.json` file contains information about
+  - the coordinates (longitude `map_NW_origin_lon` & latitude `map_NW_origin_lat`) of the operation space north-west corner
+  - the coordinates (longitude `tmerc_proj_origin_lon` & latitude `tmerc_proj_origin_lat`) of the [Transverse Mercator](https://en.wikipedia.org/wiki/Transverse_Mercator_projection) projection center
+    - the projection is used to transform Decimal degree (WGS84) (i.e., longitude & latitude coordinates) into a Cartesian (East, North) frame
+    - if not sure about this, just set it to the same values as `map_NW_origin_lon` & `map_NW_origin_lat`
+  - the dimensions `x_length`, `y_length`, and `z_length` of the operation space in x-, y-, and z-direction in meter
+  - the resolutions `x_res`, `y_res`, and `z_res` of the operation space in x-, y-, and z-direction in meter
+  - a `user_identifier` string for the scenario
+  - the minimum allowed flight height `min_flight_height`
+  - the maximum allowed flight height `max_flight_height`
+
+##### Restrictions
+
+There are some restrictions to the parameters:
+  - `x_length`, `y_length`, and `z_length` must be properly dividable by `x_res`, `y_res`, and `z_res` respectively
+  - `min_flight_height` and `max_flight_height` must be properly dividable by `z_res`
+  - if the scenario dimensions are too big or the resolution too granular, the respective grid maps will need large storage
+    - if the expected storage for one grid map exceeds 750MB, execution is terminated
+
+
 #### Map Extraction Tool (`met.py`):
 
 The Map Extraction Tool (MET) takes as input:
-  - `ScenarioInfo` containing information about
-    - the coordinates (longitude `map_NW_origin_lon` & latitude `map_NW_origin_lat`) of the operation space north-west corner
-    - the dimensions `x_length`, `y_length`, and `z_length` of the operation space in x-, y-, and z-direction in meter
-    - the resolutions `x_res`, `y_res`, and `z_res` of the operation space in x-, y-, and z-direction in meter
-    - a `user_identifier` string for the scenario
-    - the minimum allowed flight height `min_flight_height`
-    - the maximum allowed flight height `max_flight_height`
+  - `ScenarioInfo`
   - raw data from OpenStreetMap (OSM) 
   - optionally raw data from OpenCELLiD (OCID) 
 
