@@ -218,7 +218,7 @@ To run the MET example:
          - `python met_example.py`
   - In case you followed installation B (Docker container):
      - Mount data folder and run Docker container
-        - `docker run -it  -v ~/code/VIAS_data:/VIAS_data vias:latest python3 met_example.py`
+        - `docker run -it  -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest python3 met_example.py`
 4. The tool should produce the different mentioned outputs in the respective folders along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing
    - semantic data of the operation space
    - road traffic streets underneath the operation space
@@ -275,7 +275,7 @@ To run the MCT example:
        - `python mct_example.py`
    - In case you followed installation B (Docker container):
      - Mount data folder and run Docker container
-        - `docker run -it  -v ~/code/VIAS_data:/VIAS_data vias:latest python3 mct_example.py`
+        - `docker run -it  -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest python3 mct_example.py`
 3. The tool should produce the different grid maps in the folder `grid maps` along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing the generated grid maps in different ways (e.g. flat layer plot, plot of all slices and volume plot)
 
 Info: For large grid maps, the plotting of volume and slices may take too much time. You can turn off the plotting by setting `suppress_grid_image_save` and `suppress_grid_image_plot` to True in the `mct_config.yaml` file.
@@ -341,7 +341,7 @@ To run the MOPP example:
         - `python mopp_example.py`
    - In case you followed installation B (Docker container):
      - Mount data folder and run Docker container
-        - `docker run -it -v ~/code/VIAS_data:/VIAS_data vias:latest python3 mopp_example.py`
+        - `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest python3 mopp_example.py`
 4. The MOPP should produce
    - graph representations of the used grid maps in the folder `workspace/VIAS_data/processing/grid_graphs`
    - results of the pre-processing (Dijkstra) module in the folder `workspace/VIAS_data/processing/dijkstra_paths`. This includes visualizations of the
@@ -392,7 +392,7 @@ To run the PVT example:
         - `python pvt_example.py`
    - In case you followed installation B (Docker container):
      - Mount data folder and run Docker container
-        - `docker run -it -v ~/code/VIAS_data:/VIAS_data vias:latest python3 pvt_example.py`
+        - `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest python3 pvt_example.py`
 5. The PVT should produce
    - some console output information in the Pareto set's ideal and knee point
    - a 3D path plot of the knee point solution
