@@ -18,10 +18,13 @@
 - pytest integration
 - CI/CD pipeline integration
 
+## [0.1.2] - 2025-01-24
+### Functional Release
+- Docker environment setup
+
 ---
 
 ## Upcoming Changes
 - Future releases will include:
   - Documentation
   - Additional features for advanced visualization
-  - Docker environment setup.

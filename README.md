@@ -43,7 +43,10 @@ This code is based on theories and methodologies from the following publications
   _Conference: [2022 IEEE Congress on Evolutionary Computation (CEC)]_  
   _DOI/Link: [10.1109/CEC55065.2022.9870265](https://ieeexplore.ieee.org/document/9870265)_
 
-3. **PhD Thesis:** Details to be announced (TBA).
+3. **[Three-dimensional Many-objective Path Planning and Traffic Network Optimization for Urban Air Mobility Applications Under Social Considerations]**
+  _Author: N. Hohmann_
+  _Type: Dissertation_
+  _DOI/Link: [10.26083/tuprints-00028839](https://tuprints.ulb.tu-darmstadt.de/28839/)_
 
 ### Demo
 
@@ -75,15 +78,13 @@ For detailed information on the usage of the tools, see the section [Details Usa
 
 ### Installation
 
-**Option A: Build by yourself**
+**Setup folder structure**
 
-1. Install Miniconda (Python environment management tool) following https://docs.anaconda.com/miniconda/
-2. To use the Map Extraction Tool (MET), install Osmosis following https://wiki.openstreetmap.org/wiki/Osmosis/Installation
-3. Create an empty working folder, in the following called `workspace`
-4. Pull this repo into the `workspace`
-5. Create another folder `VIAS_data` and create the following structure (alternatively you can pull https://github.com/NikHoh/VIAS_data that already contains exemplary data)
+1. Create an empty working folder, in the following called `workspace`
+2. Pull this repo into the `workspace`
+3. Create another folder `VIAS_data` and create the following structure (alternatively you can pull https://github.com/NikHoh/VIAS_data that already contains exemplary data)
 
-    The project's folder structure will look like this:
+The project's folder structure will look like this:
     
     ```
     |-- workspace
@@ -108,20 +109,29 @@ For detailed information on the usage of the tools, see the section [Details Usa
       
     ```
 
-6. Navigate into the `VIAS` folder
-   - `cd workspace/VIAS` 
-7. Install a Python virtual environment with `conda`
+Now you have two options to proceed: 
+
+**Option A: Build by yourself**
+
+1. Install Miniconda (Python environment management tool) following https://docs.anaconda.com/miniconda/
+2. To use the Map Extraction Tool (MET), install Osmosis following https://wiki.openstreetmap.org/wiki/Osmosis/Installation
+3. Install a Python virtual environment with `conda`
    - `conda env create --name vias_env`
-8. Activate the environment
+4. Activate the environment
    - `conda activate vias_env`
-9. Navigate into the `VIAS` folder
-   - `cd workspace/VIAS`
-10. Install VIAS
+5. Navigate into the `VIAS` folder
+   - `cd workspace/VIAS` 
+6. Install VIAS
     - `pip install -e .`
 
 **Option B: Build and use Docker container**
 
-This will be made available soon.
+1. Install Docker Engine following https://docs.docker.com/engine/install/
+2. Navigate into the `VIAS` folder
+   - `cd workspace/VIAS`
+3. Build Docker container
+   - `docker build -t vias:latest .`
+
 
 ### Details Usage
 
@@ -197,13 +207,19 @@ To run the MET example:
 
 2. Download OCID data in the `*.csv.gz` format for the desired operation space from https://opencellid.org/
    - place the file in the folder `workspace/VIAS_data/input/ocid`
-3. Navigate into the example script folder
-   - `cd workspace/VIAS/vias/examples`
-4. Enter the virtual environment if not activated yet
-   - `conda activate vias_env`
-5. Run the map extraction tool (MET)
-   - `python met_example.py`
-6. The tool should produce the different mentioned outputs in the respective folders along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing
+
+3. Depending on the installation option:
+   - In case you followed installation A (Build yourself):
+      - Navigate into the example script folder
+         - `cd workspace/VIAS/vias/examples`
+      - Enter the virtual environment if not activated yet
+         - `conda activate vias_env`
+      - Run the map extraction tool (MET)
+         - `python met_example.py`
+  - In case you followed installation B (Docker container):
+     - Mount data folder and run Docker container
+        - `docker run -it  -v ~/code/VIAS_data:/VIAS_data vias:latest python3 met_example.py`
+4. The tool should produce the different mentioned outputs in the respective folders along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing
    - semantic data of the operation space
    - road traffic streets underneath the operation space
    - heights of buildings underneath the operation space
@@ -247,15 +263,20 @@ adding them to the config file `mct_config.yaml`.
 
 To run the MCT example:
 
-[1. Navigate into the example script folder
-   - `cd workspace/VIAS/vias/examples`
-2. Enter the virtual environment if not activated yet
-   - `conda activate vias_env`
-3. Run the map extraction tool (MET), if not done yet
-  - see section [Map Extraction Tool (`met.py`)](#map-extraction-tool-metpy)
-4. Run the map creation tool (MCT)
-  - `python mct_example.py`]()
-5. The tool should produce the different grid maps in the folder `grid maps` along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing the generated grid maps in different ways (e.g. flat layer plot, plot of all slices and volume plot)
+1. Run the map extraction tool (MET), if not done yet
+   - see section [Map Extraction Tool (`met.py`)](#map-extraction-tool-metpy)
+2. Depending on the installation option:
+   - In case you followed installation A (Build yourself):
+     - Navigate into the example script folder
+        - `cd workspace/VIAS/vias/examples`
+     - Enter the virtual environment if not activated yet
+        - `conda activate vias_env`
+     - Run the map creation tool (MCT)
+       - `python mct_example.py`
+   - In case you followed installation B (Docker container):
+     - Mount data folder and run Docker container
+        - `docker run -it  -v ~/code/VIAS_data:/VIAS_data vias:latest python3 mct_example.py`
+3. The tool should produce the different grid maps in the folder `grid maps` along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing the generated grid maps in different ways (e.g. flat layer plot, plot of all slices and volume plot)
 
 Info: For large grid maps, the plotting of volume and slices may take too much time. You can turn off the plotting by setting `suppress_grid_image_save` and `suppress_grid_image_plot` to True in the `mct_config.yaml` file.
 
@@ -306,23 +327,28 @@ and adding them to the config file `mopp_config.yaml`.
 
 To run the MOPP example:
 
-1. Navigate into the example script folder
-   - `cd workspace/VIAS/vias/examples`
-2. Enter the virtual environment if not activated yet
-   - `conda activate vias_env`
-3. Run the map extraction tool (MET), if not done yet
+1. Run the map extraction tool (MET), if not done yet
    - see section [Map Extraction Tool (`met.py`)](#map-extraction-tool-metpy)
-4. Run the map creation tool (MCT), if not done yet
+2. Run the map creation tool (MCT), if not done yet
    - see section [Map Creation Tool (`mct.py`)](#map-creation-tool-mctpy)
-5. Run the multi-objective path planning (MOPP)
-   - `python mopp_example.py`
-6. The MOPP should produce
+3. Depending on the installation option:
+   - In case you followed installation A (Build yourself):
+     - Navigate into the example script folder
+        - `cd workspace/VIAS/vias/examples`
+     - Enter the virtual environment if not activated yet
+        - `conda activate vias_env`
+     - Run the multi-objective path planning (MOPP)
+        - `python mopp_example.py`
+   - In case you followed installation B (Docker container):
+     - Mount data folder and run Docker container
+        - `docker run -it -v ~/code/VIAS_data:/VIAS_data vias:latest python3 mopp_example.py`
+4. The MOPP should produce
    - graph representations of the used grid maps in the folder `workspace/VIAS_data/processing/grid_graphs`
    - results of the pre-processing (Dijkstra) module in the folder `workspace/VIAS_data/processing/dijkstra_paths`. This includes visualizations of the
      - raw Dijkstra paths
      - the smoothed Dijkstra paths
      - and the approximated (as NURBS curve) paths, i.e. the initial paths that go into the meta-heuristic (evolutionary) optimization step
-7. After successfully terminating, MOPP has created several output files in the respective auto-generated output folder `workspace/VIAS_data/output/<xyz>`: 
+5. After successfully terminating, MOPP has created several output files in the respective auto-generated output folder `workspace/VIAS_data/output/<xyz>`: 
    - a `scenario_info.json` file with the saved scenario info
    - different formats (`*.html` `plotly` visualization, `*.png` plot, and raw statistics data as `*.pkl`) of the optimization (convergence) statistics
    - a `mopp_statistics.json` file containing (mostly) run-time-related information
@@ -350,19 +376,24 @@ Then, it plots the three-dimensional knee point path and stores the plot in the 
 
 To run the PVT example:
 
-1. Navigate into the example script folder
-   - `cd workspace/VIAS/vias/examples`
-2. Enter the virtual environment if not activated yet
-   - `conda activate vias_env`
-3. Run the map extraction tool (MET), if not done yet
+1. Run the map extraction tool (MET), if not done yet
    - see section [Map Extraction Tool (`met.py`)](#map-extraction-tool-metpy)
-4. Run the map creation tool (MCT), if not done yet
+2. Run the map creation tool (MCT), if not done yet
    - see section [Map Creation Tool (`mct.py`)](#map-creation-tool-mctpy)
-5. Run the multi-objective path planning (MOPP), if not done yet
+3. Run the multi-objective path planning (MOPP), if not done yet
    - see section [Multi-objective Path Planning (`mopp.py`)](#multi-objective-path-planning-mopppy)
-6. Run the path visualization tool (PVT)
-   - `python pvt_example.py`
-7. The PVT should produce
+4. Depending on the installation option:
+   - In case you followed installation A (Build yourself):
+     - Navigate into the example script folder
+        - `cd workspace/VIAS/vias/examples`
+     - Enter the virtual environment if not activated yet
+        - `conda activate vias_env`
+     - Run the path visualization tool (PVT)
+        - `python pvt_example.py`
+   - In case you followed installation B (Docker container):
+     - Mount data folder and run Docker container
+        - `docker run -it -v ~/code/VIAS_data:/VIAS_data vias:latest python3 pvt_example.py`
+5. The PVT should produce
    - some console output information in the Pareto set's ideal and knee point
    - a 3D path plot of the knee point solution
 
@@ -400,6 +431,7 @@ Planned updates in the next two to three weeks:
 
 - [IEEE Journal Paper](https://ieeexplore.ieee.org/document/10196046)
 - [IEEE Conference Paper](https://ieeexplore.ieee.org/document/9870265)
+- [Dissertation](https://tuprints.ulb.tu-darmstadt.de/28839/)
 
 ---
 
