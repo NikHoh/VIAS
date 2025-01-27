@@ -200,8 +200,13 @@ To run the MET example:
 
 1. Download OSM data in the `*.osm.bz2` format or the `*.osm.pbf` format for the desired operation space
    - e.g. from https://download.geofabrik.de/ for larger areas (Osmosis is faster for smaller areas) or from https://extract.bbbike.org/ for specific areas
-   - Info: The MET works with the `*.osm.bz2` format. To convert from `*.osm.pbf` use Osmosis
-   - ```osmosis --read-pbf myfile.osm.pbf --write-xml myfile.osm.bz2```
+   - Info: The MET works with the `*.osm.bz2` format. To convert from `*.osm.pbf` use Osmosis:
+      - In case you followed installation A (Build yourself):
+         - ```osmosis --read-pbf myfile.osm.pbf --write-xml myfile.osm.bz2```
+      - In case you followed installation B (Docker container):
+         - Enter the Docker container's bash `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest /bin/bash`
+         - Navigate to the folder where the *.osm.pbf file is located
+         - ```osmosis --read-pbf myfile.osm.pbf --write-xml myfile.osm.bz2```
    - More info on the conversion: https://download.geofabrik.de/bz2.html
    - place the `*.osm.bz2` file in the folder `workspace/VIAS_data/input/osm`
 
@@ -216,14 +221,27 @@ To run the MET example:
          - `conda activate vias_env`
       - Run the map extraction tool (MET)
          - `python met_example.py`
-  - In case you followed installation B (Docker container):
-     - Mount data folder and run Docker container
-        - `docker run -it  -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest python3 met_example.py`
+   - In case you followed installation B (Docker container):
+      - Mount data folder and run Docker container
+         - `docker run -it  -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest python3 met_example.py`
 4. The tool should produce the different mentioned outputs in the respective folders along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing
    - semantic data of the operation space
    - road traffic streets underneath the operation space
    - heights of buildings underneath the operation space
    - the positions of radio signals
+
+To run the MET with your own scenario data:
+
+Either
+   - adapt the data in the `met_example.py` file accordingly and run it
+or 
+   - directly run `met.py` and providing as arguments the paths to 
+     - the osm file, 
+     - the base data folder,
+     - the config file
+     - the data save folder, and
+     - and optionally to the ocid files
+   - ensuring that the base data folder contains a `scenario_info.json` file.
 
 #### Map Creation Tool (`mct.py`):
 
@@ -279,6 +297,18 @@ To run the MCT example:
 3. The tool should produce the different grid maps in the folder `grid maps` along with images in the folder `workspace/VIAS_data/input/grid_map_plots` visualizing the generated grid maps in different ways (e.g. flat layer plot, plot of all slices and volume plot)
 
 Info: For large grid maps, the plotting of volume and slices may take too much time. You can turn off the plotting by setting `suppress_grid_image_save` and `suppress_grid_image_plot` to True in the `mct_config.yaml` file.
+
+To run the MCT with your own scenario data:
+
+Either
+   - adapt the data in the `mct_example.py` file accordingly and run it
+or 
+   - directly run `mct.py` and providing as arguments the paths to
+     - the base data folder,
+     - the config file,
+     - the data input folder, and
+     - the data save folder
+   - ensuring that the base data folder contains a `scenario_info.json` file.
 
 #### Multi-objective Path Planning (`mopp.py`):
 
@@ -356,6 +386,23 @@ To run the MOPP example:
    - a `F_X_dict.pkl` file containing the ojbective function values (`F`) and the optimization variables (`X`) (i.e., the control point positions) of all Pareto set paths
    - a folder `optimized_paths` that contains visualizations of the Pareto set's extreme point solutions (i.e., the 'optimal' solutions regarding one objective function)
 
+To run the MOPP tool with your own scenario data:
+
+Either
+   - adapt the data in the `mopp_example.py` file accordingly and run it
+or 
+   - directly run `mopp.py` and providing as arguments
+     - the path to the base data folder,
+     - the longitude coordinate to the path's start,
+     - the latitude coordinate to the path's start,
+     - the longitude coordinate to the path's goal,
+     - the latitude coordinate to the path's goal,
+     - the path to the config file,
+     - the path to the data input folder,
+     - the path to the data save folder, and
+     - the path to the data processing folder
+   - ensuring that the base data folder contains a `scenario_info.json` file.
+
 #### Path Visualization Tool (`pvt.py`):
 
 The Path Visualization Tool (PVT) takes as input:
@@ -396,6 +443,18 @@ To run the PVT example:
 5. The PVT should produce
    - some console output information in the Pareto set's ideal and knee point
    - a 3D path plot of the knee point solution
+
+To run the PVT with your own scenario data:
+
+Either
+   - adapt the data in the `pvt_example.py` file accordingly and run it
+or 
+   - directly run `pvt.py` and providing as arguments the paths to
+     - the base data folder,
+     - the config file,
+     - the optimization results, and
+     - and optionally the path to the grid maps' folder
+   - ensuring that the base data folder contains a `scenario_info.json` file.
 
 ### Crucial Parameters
 
