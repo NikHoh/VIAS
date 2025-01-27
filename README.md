@@ -242,6 +242,12 @@ or
      - the data save folder, and
      - and optionally to the ocid files
    - ensuring that the base data folder contains a `scenario_info.json` file.
+   - Hint: Using the Docker container 
+     - you can enter the container's bash
+        - `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest /bin/bash`
+     - Navigate to the `vias` folder
+     - and run 
+       - `python3 met.py <args>`
 
 #### Map Creation Tool (`mct.py`):
 
@@ -309,6 +315,12 @@ or
      - the data input folder, and
      - the data save folder
    - ensuring that the base data folder contains a `scenario_info.json` file.
+   - Hint: Using the Docker container 
+      - you can enter the container's bash
+         - `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest /bin/bash`
+      - Navigate to the `vias` folder
+      - and run 
+         - `python3 mct.py <args>`
 
 #### Multi-objective Path Planning (`mopp.py`):
 
@@ -402,6 +414,12 @@ or
      - the path to the data save folder, and
      - the path to the data processing folder
    - ensuring that the base data folder contains a `scenario_info.json` file.
+   - Hint: Using the Docker container 
+      - you can enter the container's bash
+         - `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest /bin/bash`
+      - Navigate to the `vias` folder
+      - and run 
+         - `python3 mopp.py <args>`
 
 #### Path Visualization Tool (`pvt.py`):
 
@@ -455,6 +473,12 @@ or
      - the optimization results, and
      - and optionally the path to the grid maps' folder
    - ensuring that the base data folder contains a `scenario_info.json` file.
+   - Hint: Using the Docker container 
+      - you can enter the container's bash
+         - `docker run -it -v <path_to_workspace>/VIAS_data:/VIAS_data vias:latest /bin/bash`
+      - Navigate to the `vias` folder
+      - and run 
+         - `python3 pvt.py <args>`
 
 ### Crucial Parameters
 
