@@ -225,7 +225,7 @@ class ParetoHandler:
         return knee_idx
 
     def get_hypervolume(self):
-        return self.data["hv"][-1]
+        return self.data["HV"][-1]
 
     def get_F_X_dict(self):
         return dict(
